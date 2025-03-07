@@ -22,7 +22,7 @@ To see who's online, simply run this powershell script with the logfile paramete
 Valheim-WhoIsOnline.ps1 -logfile "C:\Path\to\logfile\dedicated_server_log.txt"
 ```
 
-A powershell window will open and refresh every 30 seconds. It will show you any player who has connected since you started outputting the log file. It will show you their player name, their steamID, their steam username (retrieved via https://steamid.io) their online/offline status, and the last time they logged on.
+A powershell window will open and refresh every 30 seconds. It will show you any player who has connected since you started outputting the log file. It will show you their player name, their steamID, their steam username (retrieved via https://steamcommunity.com) their online/offline status, and the last time they logged on.
 
 You can exit this script by pushing CTRL+C in the powershell window.
 
