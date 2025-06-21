@@ -12,8 +12,7 @@ Do{
     $content = Get-Content $logfile
     # This builds an array containing only specific lines from the log file and then sorts them in order
     $contentTrimmed = @($content -match "Got connection SteamID") # steam player connection    
-    $contentTrimmed += @($content -match "Got character ZDOID from") # character log in
-    $contentTrimmed += @($content -match " : 0:0") # character deaths
+    $contentTrimmed += @($content -match "Got character ZDOID from") # character log in and deaths
     $contentTrimmed = @($contentTrimmed | Sort-Object)
 
     # This section finds all the unique steamIDs
@@ -34,12 +33,12 @@ Do{
             }Else{$LoggedOff = $null}
 
             # This attempts to grab the player name from the logs
-            If($contentTrimmed[$connection + 1] -match "Got character ZDOID from"){
+            If(($contentTrimmed[$connection + 1] -match "Got character ZDOID from")){                
                 # this attempts to work around an issue where you run the script while a player isn't fully connected.               
-                $Player = (($contentTrimmed[$connection + 1]).split(':')[3]) -replace ("Got character ZDOID FROM ")
+                $Player = (($contentTrimmed[$connection + 1]).split(':')[3]) -replace ("Got character ZDOID FROM ")                
             }Else{$Player = $null}
 
-            # Retrieves info from the interweb about who the steamID belongs to            
+            # Retrieves info from the interweb about who the steamID belongs to        
             If(Test-Connection "steamcommunity.com" -Count 1 -ErrorAction SilentlyContinue){
                 $Response = Invoke-WebRequest -Uri "https://steamcommunity.com/profiles/$steamid"
                 If($Response){
@@ -50,12 +49,12 @@ Do{
 
             # Builds the output
             [PSCustomObject]@{
-                Player = $Player
+                Player = If($null -ne $player){$Player.trim()}Else{$null}
                 SteamID = $steamID
                 SteamName = $SteamName
                 Status = If($LoggedOn -gt $LoggedOff){"Online"}Else{"Offline"}
                 LastLogon = $LoggedOn
-            }        
+            }                   
         )
     }
 
