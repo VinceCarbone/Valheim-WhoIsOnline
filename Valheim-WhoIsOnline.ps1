@@ -40,7 +40,7 @@ Do{
 
             # Retrieves info from the interweb about who the steamID belongs to        
             If(Test-Connection "steamcommunity.com" -Count 1 -ErrorAction SilentlyContinue){
-                $Response = Invoke-WebRequest -Uri "https://steamcommunity.com/profiles/$steamid"
+                $Response = Invoke-WebRequest -Uri "https://steamcommunity.com/profiles/$steamid" -UseBasicParsing
                 If($Response){
                     $SteamName = (((($response.content -split "`n") | Select-String "<title>") -replace "<title>Steam Community :: ","") -replace "</title>","").trim()
                     If($SteamName -eq "Error"){$SteamName = $null}
